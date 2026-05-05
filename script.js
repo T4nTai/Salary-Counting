@@ -250,26 +250,29 @@ function computePayroll(rows, hourlyRate) {
 	const detailed = [];
 	let total = 0;
 	rows.forEach(r => {
-		let dayHours = Number(r.hours) || 0;
-		let nightHours = Number(r.nightHours) || 0;
+		const totalHours = Number(r.hours) || 0;
+		const rawNightHours = Number(r.nightHours) || 0;
+		let nightHours = Math.ceil(rawNightHours);
 		const isHol = Number(r.isHoliday) || 0;
-		
-		// Ưu tiên trừ 0.5h giải lao từ giờ ngày
+
+		// Giờ ngày = tổng giờ - giờ đêm thực tế, sau đó trừ 0.5h giải lao vào giờ ngày.
+		let dayHours = Math.max(0, totalHours - rawNightHours);
 		dayHours = Math.max(0, dayHours - 0.5);
-		// Vòng lên giờ đêm
-		nightHours = Math.ceil(nightHours);
 		
 		if (isHol) {
-			const totalHours = dayHours + nightHours;
-			const dayTotal = totalHours * hourlyRate * 3; // holiday 300%
-			detailed.push({ date: r.date, dayHours: parseFloat(dayHours.toFixed(2)), nightHours, isHoliday: 1, basePay: 0, nightExtra: 0, dayTotal });
+			const totalHoursPaid = dayHours + nightHours;
+			// Ngày lễ: chỉ nhân 300%, KHÔNG tính phụ cấp đêm
+			const basePay = totalHoursPaid * hourlyRate * 3;
+			const dayTotal = basePay;
+			detailed.push({ date: r.date, totalHours: parseFloat(totalHours.toFixed(2)), dayHours: parseFloat(dayHours.toFixed(2)), nightHours, isHoliday: 1, basePay, nightExtra: 0, dayTotal });
 			total += dayTotal;
 			return;
 		}
-		const basePay = dayHours * hourlyRate;
+		const totalHoursPaid = dayHours + nightHours;
+		const basePay = totalHoursPaid * hourlyRate;
 		const nightExtra = nightHours * hourlyRate * 0.3; // +30% for night hours
 		const dayTotal = basePay + nightExtra;
-		detailed.push({ date: r.date, dayHours: parseFloat(dayHours.toFixed(2)), nightHours, isHoliday: 0, basePay, nightExtra, dayTotal });
+		detailed.push({ date: r.date, totalHours: parseFloat(totalHours.toFixed(2)), dayHours: parseFloat(dayHours.toFixed(2)), nightHours, isHoliday: 0, basePay, nightExtra, dayTotal });
 		total += dayTotal;
 	});
 	return { total, detailed };
