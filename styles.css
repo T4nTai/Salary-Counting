@@ -1,0 +1,15 @@
+:root{--bg:#f7f9fb;--card:#fff;--accent:#0366d6}
+*{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+body{margin:0;background:var(--bg);color:#111}
+.container{max-width:900px;margin:32px auto;padding:20px}
+.panel{background:var(--card);padding:16px;border-radius:8px;box-shadow:0 1px 4px rgba(2,6,23,.06);margin-bottom:16px}
+label{display:inline-block;margin-right:12px}
+input[type=date],input[type=number]{padding:6px;border:1px solid #ddd;border-radius:4px}
+.row{margin-top:12px}
+button{background:var(--accent);color:#fff;border:0;padding:8px 12px;border-radius:6px;cursor:pointer}
+.file input{display:inline-block;margin-left:6px}
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th,td{padding:8px;border:1px solid #eee;text-align:left}
+.total{margin-top:12px;font-weight:700}
+.notes ul{margin:8px 0 0 18px}
+

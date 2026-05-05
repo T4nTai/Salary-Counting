@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="vi">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Ứng dụng tính lương (static)</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<main class="container">
+		<h1>Máy tính lương đơn giản</h1>
+
+		<section class="panel">
+      <label>Lương theo giờ (VND): <input type="number" id="hourlyRate" value="100000" min="0"></label>
+      <div class="row">
+        <button id="exportExcelMatrix">Xuất mẫu Excel</button>
+        <label class="file">Nhập file (CSV hoặc XLSX): <input type="file" id="importFile" accept=".csv,.xlsx"></label>
+      </div>
+		</section>
+
+		<section class="panel">
+			<button id="calculate">Tính lương từ CSV đã nhập</button>
+			<div id="summary" class="summary"></div>
+			<div id="resultsArea"></div>
+		</section>
+
+		<section class="panel notes">
+			<strong>Hướng dẫn:</strong>
+			<ul>
+				<li>Nhấn "Xuất mẫu Excel" để tải template mẫu (3 hàng: Ngày, Ca, Ngày lễ).</li>
+				<li>Nhân viên tự điền dữ liệu vào các cột:
+					<ul>
+						<li>Hàng "Ngày": điền ngày làm việc (YYYY-MM-DD).</li>
+						<li>Hàng "Ca": điền giờ ca làm (HH:MM-HH:MM, ví dụ: 09:00-17:00).</li>
+						<li>Hàng "Ngày lễ": điền 1 nếu là ngày lễ, 0 nếu là ngày thường.</li>
+					</ul>
+				</li>
+				<li>Lưu file và nhập vào ứng dụng qua "Nhập file (CSV hoặc XLSX)".</li>
+				<li>Nhấn "Tính lương từ CSV đã nhập" để xem kết quả tính lương.</li>
+				<li>Quy tắc tính: nếu Ngày lễ=1 → tổng giờ nhân 300%. Ngược lại: giờ thường x1, giờ đêm (22:00-06:00) thêm +30%.</li>
+			</ul>
+		</section>
+	</main>
+
+	<!-- SheetJS for Excel export/import -->
+	<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+	<script src="script.js"></script>
+</body>
+</html>
+
