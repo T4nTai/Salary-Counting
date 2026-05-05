@@ -5,6 +5,30 @@ function fmtDate(d) {
 	return `${yyyy}-${mm}-${dd}`;
 }
 
+function fmtDateDDMMYY(d) {
+	const dd = String(d.getDate()).padStart(2, '0');
+	const mm = String(d.getMonth() + 1).padStart(2, '0');
+	const yy = String(d.getFullYear()).slice(-2);
+	return `${dd}/${mm}/${yy}`;
+}
+
+function parseDateDDMMYY(dateStr) {
+	// Parse dd/mm/yy format
+	const parts = String(dateStr).split('/');
+	if (parts.length !== 3) return null;
+	let dd = parseInt(parts[0], 10);
+	let mm = parseInt(parts[1], 10);
+	let yy = parseInt(parts[2], 10);
+	// Handle 2-digit year: 00-30 -> 2000-2030, 31-99 -> 1931-1999
+	const yyyy = yy > 30 ? 1900 + yy : 2000 + yy;
+	const d = new Date(yyyy, mm - 1, dd);
+	if (d.getFullYear() !== yyyy || d.getMonth() !== mm - 1 || d.getDate() !== dd) {
+		return null; // Invalid date
+	}
+	const iso = `${String(yyyy).padStart(4, '0')}-${String(mm).padStart(2, '0')}-${String(dd).padStart(2, '0')}`;
+	return iso;
+}
+
 function listDates(start, end) {
 	const a = [];
 	const cur = new Date(start.getTime());
@@ -88,9 +112,12 @@ function parseXLSX(arrayBuffer) {
 		const secondRow = raw[1];
 		const thirdRow = raw[2] || [];
 		for (let c = 1; c < firstRow.length; c++) {
-			const date = firstRow[c];
+			const dateRaw = firstRow[c];
 			const shift = secondRow[c] || '';
 			const isHol = Number(thirdRow[c] || 0) ? 1 : 0;
+			const dateISO = parseDateDDMMYY(dateRaw);
+			if (!dateISO) continue; // Skip invalid dates
+			const date = dateISO;
 			let start = '', end = '';
 			if (shift && typeof shift === 'string' && shift.indexOf('-') !== -1) {
 				const parts = shift.split('-').map(s => s.trim());
@@ -119,7 +146,7 @@ function parseXLSX(arrayBuffer) {
 				nightHours += overlap(dtStart, dtEnd, night1Start, new Date(night1End.getTime()+1000));
 				nightHours += overlap(dtStart, dtEnd, night2Start, night2End);
 			}
-			rows.push({ date: String(date), hours: parseFloat(hours.toFixed(2)), nightHours: parseFloat(nightHours.toFixed(2)), isHoliday: isHol });
+			rows.push({ date: String(dateRaw), hours: parseFloat(hours.toFixed(2)), nightHours: parseFloat(nightHours.toFixed(2)), isHoliday: isHol });
 		}
 		return rows;
 	}
