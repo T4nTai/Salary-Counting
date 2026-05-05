@@ -5,11 +5,25 @@ body{margin:0;background:var(--bg);color:#111}
 .panel{background:var(--card);padding:16px;border-radius:8px;box-shadow:0 1px 4px rgba(2,6,23,.06);margin-bottom:16px}
 label{display:inline-block;margin-right:12px}
 input[type=date],input[type=number]{padding:6px;border:1px solid #ddd;border-radius:4px}
+input[type=time],select{padding:6px;border:1px solid #ddd;border-radius:4px;background:#fff}
 .row{margin-top:12px}
 button{background:var(--accent);color:#fff;border:0;padding:8px 12px;border-radius:6px;cursor:pointer}
+.ghost-button{background:#eef3fb;color:#17324d}
+.mode-switch{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.mode-btn{background:#e8edf5;color:#17324d}
+.mode-btn.active{background:var(--accent);color:#fff}
+.hidden{display:none}
+.sheet-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sheet-note{margin:0 0 12px;color:#44536a;font-size:14px}
+.sheet-wrap{overflow:auto;border:1px solid #dde5f1;border-radius:10px}
 .file input{display:inline-block;margin-left:6px}
 table{width:100%;border-collapse:collapse;margin-top:12px}
 th,td{padding:8px;border:1px solid #eee;text-align:left}
+.sheet-wrap table{margin-top:0;min-width:760px}
+.sheet-wrap th,.sheet-wrap td{border-color:#d9e3ef;vertical-align:middle}
+.sheet-wrap thead th{background:#f4f8fc;position:sticky;top:0;z-index:1}
+.sheet-wrap input[type=date],.sheet-wrap input[type=time],.sheet-wrap select{width:100%;min-width:110px}
+.preview-cell{font-variant-numeric:tabular-nums;color:#17324d;white-space:nowrap}
 .total{margin-top:12px;font-weight:700}
 .notes ul{margin:8px 0 0 18px}
 

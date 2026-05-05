@@ -11,18 +11,49 @@
 		<h1>Máy tính lương đơn giản</h1>
 
 		<section class="panel">
-      <label>Lương theo giờ (VND): <input type="number" id="hourlyRate" value="100000" min="0"></label>
-      <div class="row">
-        <label>Chọn tháng lương:
-          <input type="month" id="payrollMonth">
-        </label>
-        <button id="exportExcelMatrix">Xuất mẫu Excel</button>
-        <label class="file">Nhập file (CSV hoặc XLSX): <input type="file" id="importFile" accept=".csv,.xlsx"></label>
-      </div>
+			<div class="mode-switch">
+				<button type="button" id="fileModeBtn" class="mode-btn active">Nhập từ file</button>
+				<button type="button" id="sheetModeBtn" class="mode-btn">Nhập trực tiếp</button>
+			</div>
+
+			<div id="filePanel">
+				<label>Lương theo giờ (VND): <input type="number" id="hourlyRate" value="100000" min="0"></label>
+				<div class="row">
+					<label>Chọn tháng lương:
+						<input type="month" id="payrollMonth">
+					</label>
+					<button id="exportExcelMatrix">Xuất mẫu Excel</button>
+					<label class="file">Nhập file (CSV hoặc XLSX): <input type="file" id="importFile" accept=".csv,.xlsx"></label>
+				</div>
+			</div>
+
+			<div id="sheetPanel" class="hidden">
+				<div class="sheet-toolbar">
+					<button id="buildDirectSheet" type="button">Tạo bảng theo tháng</button>
+					<button id="addDirectRow" type="button" class="ghost-button">Thêm dòng trống</button>
+					<button id="resetDirectSheet" type="button" class="ghost-button">Làm mới bảng</button>
+				</div>
+				<p class="sheet-note">Bảng này cho phép nhập trực tiếp giống spreadsheet, hệ thống sẽ tự tính tổng giờ và giờ đêm theo từng dòng.</p>
+				<div class="sheet-wrap">
+					<table id="directSheet">
+						<thead>
+							<tr>
+								<th>Ngày</th>
+								<th>Giờ vào</th>
+								<th>Giờ ra</th>
+								<th>Ngày lễ</th>
+								<th>Giờ ca / Giờ đêm</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody id="directSheetBody"></tbody>
+					</table>
+				</div>
+			</div>
 		</section>
 
 		<section class="panel">
-			<button id="calculate">Tính lương từ CSV đã nhập</button>
+			<button id="calculate">Tính lương</button>
 			<div id="summary" class="summary"></div>
 			<div id="resultsArea"></div>
 		</section>
@@ -30,7 +61,7 @@
 		<section class="panel notes">
 			<strong>Hướng dẫn:</strong>
 			<ul>
-				<li><strong>Chọn tháng lương</strong> rồi nhấn "Xuất mẫu Excel" để tải template tự động.
+				<li><strong>Chọn tháng lương</strong> rồi nhấn "Xuất mẫu Excel" để tải template tự động hoặc nhấn "Tạo bảng theo tháng" để nhập trực tiếp ngay trên web.
 				</li>
 				<li>Template có 3 hàng:
 					<ul>
@@ -39,15 +70,16 @@
 						<li>Hàng "Ngày lễ": điền 1 nếu là ngày lễ, 0 nếu là ngày thường.</li>
 					</ul>
 				</li>
-				<li>Lưu file và nhập vào ứng dụng qua "Nhập file (CSV hoặc XLSX)".</li>
-				<li>Nhấn "Tính lương từ CSV đã nhập" để xem kết quả tính lương.</li>
+				<li>Ca đêm được tính từ <strong>21:30</strong> đến <strong>06:00</strong>.</li>
+				<li>Lưu file và nhập vào ứng dụng qua "Nhập file (CSV hoặc XLSX)" hoặc dùng bảng nhập trực tiếp.</li>
+				<li>Nhấn "Tính lương" để xem kết quả tính lương.</li>
 			</ul>
 		</section>
 	</main>
 
 	<!-- SheetJS for Excel export/import -->
 	<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-	<script src="script.js"></script>
+	<script src="main.js"></script>
 </body>
 </html>
 
